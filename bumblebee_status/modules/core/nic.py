@@ -169,7 +169,11 @@ class Module(core.module.Module):
         if not self._iswlan(intf) or self._istunnel(intf) or not self.iw:
             return ""
 
-        iw_info = util.cli.execute("{} dev {} info".format(self.iw, intf))
+        try:
+            iw_info = util.cli.execute("{} dev {} info".format(self.iw, intf))
+        except RuntimeError:
+            return ""
+
         for line in iw_info.split("\n"):
             match = re.match(r"^\s+ssid\s(.+)$", line)
             if match:
@@ -181,7 +185,11 @@ class Module(core.module.Module):
         if not self._iswlan(intf) or self._istunnel(intf) or not self.iw:
             return None
 
-        iw_info = util.cli.execute("{} dev {} link".format(self.iw, intf))
+        try:
+            iw_info = util.cli.execute("{} dev {} link".format(self.iw, intf))
+        except RuntimeError:
+            return None
+
         for line in iw_info.split("\n"):
             match = re.match(r"^\s+signal:\s(.+) dBm$", line)
             if match:
