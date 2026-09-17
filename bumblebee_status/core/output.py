@@ -293,6 +293,7 @@ class i3(object):
                 self.__content[widget.id]["text"] = widget.full_text()
 
     def statusline(self):
+        self.__theme.begin()
         blocks = []
         self.__widgetcount = 0
         for module in self.__modules:
